@@ -12,9 +12,9 @@ export default function Navbar() {
   const navLinks = [
     { name: 'Home', href: '/' },
     { name: 'About Us', href: '/about' },
+    { name: 'Courses', href: '/courses' },
     { name: 'Blogs', href: '/blogs' },
     { name: 'News', href: '/news' },
-    { name: 'Results', href: '/#why-choose-us' },
     { name: 'Contact', href: '/contact' },
   ];
 

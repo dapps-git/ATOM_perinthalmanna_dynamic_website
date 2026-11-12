@@ -4,7 +4,11 @@ const Admin = require('../models/Admin');
 const { getIsConnected } = require('../config/db');
 
 const DEFAULT_ADMIN_EMAIL = (process.env.ADMIN_EMAIL || 'atominstitute@perinthalmanna.com').toLowerCase().trim();
-const DEFAULT_ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'atominstitute@#perinthalmanna';
+
+// Pre-hashed fallback password – never store plaintext
+const DEFAULT_ADMIN_PASSWORD_HASH =
+  process.env.ADMIN_PASSWORD_HASH ||
+  '$2a$10$Z.Vf3cxCup.rgJG34yCkieI/wm2uxC923siv13E2KMTAEDFH2pA7O';
 
 // Generate JWT Token
 const generateToken = (payload) => {
@@ -18,11 +22,23 @@ const seedDefaultAdminIfConnected = async () => {
   try {
     const existing = await Admin.findOne({ email: DEFAULT_ADMIN_EMAIL });
     if (!existing) {
-      await Admin.create({
+      // Create with the pre-hashed password directly (skip the pre-save hook)
+      const admin = new Admin({
         name: 'Atom Admin',
         email: DEFAULT_ADMIN_EMAIL,
-        password: DEFAULT_ADMIN_PASSWORD,
+        password: DEFAULT_ADMIN_PASSWORD_HASH,
         role: 'superadmin',
+      });
+      // Save without triggering the pre-save hash (password is already hashed)
+      admin.$__reset();
+      admin.isNew = true;
+      await Admin.collection.insertOne({
+        name: admin.name,
+        email: admin.email,
+        password: DEFAULT_ADMIN_PASSWORD_HASH,
+        role: admin.role,
+        createdAt: new Date(),
+        updatedAt: new Date(),
       });
       console.log(`✨ Default Admin created in MongoDB: ${DEFAULT_ADMIN_EMAIL}`);
     }
@@ -52,14 +68,17 @@ const login = async (req, res) => {
     if (getIsConnected()) {
       let admin = await Admin.findOne({ email: cleanEmail });
 
-      // If database is empty and logging in with predefined credentials, seed it
-      if (!admin && cleanEmail === DEFAULT_ADMIN_EMAIL && password === DEFAULT_ADMIN_PASSWORD) {
-        admin = await Admin.create({
-          name: 'Atom Admin',
-          email: DEFAULT_ADMIN_EMAIL,
-          password: DEFAULT_ADMIN_PASSWORD,
-          role: 'superadmin',
-        });
+      // If database has no admin and credentials match the default, seed it
+      if (!admin && cleanEmail === DEFAULT_ADMIN_EMAIL) {
+        const isDefaultPassword = await bcrypt.compare(password, DEFAULT_ADMIN_PASSWORD_HASH);
+        if (isDefaultPassword) {
+          admin = await Admin.create({
+            name: 'Atom Admin',
+            email: DEFAULT_ADMIN_EMAIL,
+            password: password, // pre-save hook will hash it
+            role: 'superadmin',
+          });
+        }
       }
 
       if (!admin) {
@@ -97,37 +116,40 @@ const login = async (req, res) => {
       });
     }
 
-    // Fallback mode when MongoDB is not yet connected
-    if (cleanEmail === DEFAULT_ADMIN_EMAIL && password === DEFAULT_ADMIN_PASSWORD) {
-      const token = generateToken({
-        id: 'admin_local_fallback',
-        email: DEFAULT_ADMIN_EMAIL,
-        name: 'Atom Administrator',
-        role: 'admin',
-      });
-
-      return res.json({
-        success: true,
-        message: 'Login successful (Running in resilient fallback mode until MongoDB is connected)',
-        token,
-        admin: {
+    // Fallback mode when MongoDB is not yet connected – compare with bcrypt hash
+    if (cleanEmail === DEFAULT_ADMIN_EMAIL) {
+      const isMatch = await bcrypt.compare(password, DEFAULT_ADMIN_PASSWORD_HASH);
+      if (isMatch) {
+        const token = generateToken({
           id: 'admin_local_fallback',
-          name: 'Atom Administrator',
           email: DEFAULT_ADMIN_EMAIL,
+          name: 'Atom Administrator',
           role: 'admin',
-        },
-      });
+        });
+
+        return res.json({
+          success: true,
+          message: 'Login successful (Running in resilient fallback mode until MongoDB is connected)',
+          token,
+          admin: {
+            id: 'admin_local_fallback',
+            name: 'Atom Administrator',
+            email: DEFAULT_ADMIN_EMAIL,
+            role: 'admin',
+          },
+        });
+      }
     }
 
     return res.status(401).json({
       success: false,
-      message: 'Invalid email or password. Default credentials: atominstitute@perinthalmanna.com',
+      message: 'Invalid email or password',
     });
   } catch (error) {
-    console.error('Login error:', error);
+    console.error('Login error:', error.message);
     res.status(500).json({
       success: false,
-      message: 'Server error during authentication: ' + error.message,
+      message: 'Server error during authentication',
     });
   }
 };
@@ -155,4 +177,3 @@ module.exports = {
   getMe,
   seedDefaultAdminIfConnected,
 };
-

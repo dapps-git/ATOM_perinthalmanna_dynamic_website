@@ -7,12 +7,18 @@ import {
   CheckCircle2,
   Clock,
   ArrowUpRight,
-  Database,
-  Cloud,
+  UserCheck,
   Sparkles,
 } from 'lucide-react';
 
-export default function Dashboard({ blogs, news, onNavigate, onOpenCreateBlog, onOpenCreateNews }) {
+export default function Dashboard({
+  blogs = [],
+  news = [],
+  enquiryCount = 0,
+  onNavigate,
+  onOpenCreateBlog,
+  onOpenCreateNews,
+}) {
   const publishedBlogs = blogs.filter((b) => b.isPublished).length;
   const publishedNews = news.filter((n) => n.isPublished).length;
   const totalViews = blogs.reduce((acc, curr) => acc + (curr.views || 0), 0);
@@ -30,7 +36,7 @@ export default function Dashboard({ blogs, news, onNavigate, onOpenCreateBlog, o
             Academic & Content Hub
           </h2>
           <p className="mt-2 text-sm sm:text-base text-red-100/90 leading-relaxed">
-            Manage your latest institution updates, exam coaching results, blog articles, and news releases. All images are automatically converted to optimized WebP format.
+            Manage your latest institution updates, exam coaching results, blog articles, and student enquiries in one unified console.
           </p>
 
           <div className="mt-5 flex flex-wrap gap-3">
@@ -108,20 +114,20 @@ export default function Dashboard({ blogs, news, onNavigate, onOpenCreateBlog, o
           </div>
         </div>
 
-        {/* Image Optimizer */}
+        {/* Admission Enquiries */}
         <div className="bg-white p-5 rounded-2xl border border-gray-200/80 shadow-sm hover:shadow-md transition">
           <div className="flex items-center justify-between">
             <span className="text-xs font-semibold text-gray-500 uppercase tracking-wider">
-              Image Pipeline
+              Enquiries
             </span>
             <div className="w-9 h-9 rounded-xl bg-red-50 text-red-600 flex items-center justify-center">
-              <Sparkles className="w-5 h-5" />
+              <UserCheck className="w-5 h-5" />
             </div>
           </div>
-          <p className="text-2xl font-bold text-gray-900 mt-2">WebP</p>
+          <p className="text-2xl font-bold text-gray-900 mt-2">{enquiryCount}</p>
           <div className="flex items-center gap-1.5 mt-2 text-xs text-emerald-600 font-medium">
-            <span className="w-2 h-2 rounded-full bg-emerald-500" />
-            <span>Auto Sharp compression active</span>
+            <CheckCircle2 className="w-3.5 h-3.5" />
+            <span>Admissions desk</span>
           </div>
         </div>
       </div>
@@ -237,17 +243,6 @@ export default function Dashboard({ blogs, news, onNavigate, onOpenCreateBlog, o
             )}
           </div>
         </div>
-      </div>
-
-      {/* Connection & Setup Helper Info */}
-      <div className="bg-white rounded-2xl border border-red-100 p-5 shadow-sm">
-        <h4 className="font-bold text-gray-900 text-sm flex items-center gap-2 mb-2">
-          <Database className="w-4 h-4 text-red-600" />
-          <span>MongoDB & Cloudinary Integration Readiness</span>
-        </h4>
-        <p className="text-xs text-gray-600 leading-relaxed">
-          The backend is currently running with automatic fallback handling so you can test all admin features, image conversions, and content creations immediately. Once you provide your MongoDB connection string and Cloudinary API credentials in <code className="bg-red-50 text-red-700 px-1.5 py-0.5 rounded font-mono text-xs font-semibold">backend/.env</code>, the backend will automatically persist data to your cloud MongoDB and stream WebP images directly to your Cloudinary media library.
-        </p>
       </div>
     </div>
   );

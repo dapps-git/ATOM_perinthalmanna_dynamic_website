@@ -24,6 +24,7 @@ export default function App() {
   const [news, setNews] = useState([]);
   const [enquiries, setEnquiries] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   // Check existing login
   useEffect(() => {
@@ -85,26 +86,46 @@ export default function App() {
   return (
     <div className="min-h-screen bg-slate-50 flex flex-col text-slate-800">
       {/* Top Navbar */}
-      <Navbar admin={admin} onLogout={handleLogout} />
+      <Navbar
+        admin={admin}
+        onLogout={handleLogout}
+        onToggleSidebar={() => setIsSidebarOpen((prev) => !prev)}
+        isSidebarOpen={isSidebarOpen}
+      />
 
       {/* Main Layout */}
       <div className="flex-1 flex flex-col md:flex-row">
         <Sidebar
           activeTab={activeTab}
-          setActiveTab={setActiveTab}
+          setActiveTab={(tab) => {
+            setActiveTab(tab);
+            setIsSidebarOpen(false);
+          }}
           blogCount={blogs.length}
           newsCount={news.length}
           enquiryCount={enquiries.length}
+          isOpen={isSidebarOpen}
+          onClose={() => setIsSidebarOpen(false)}
         />
 
-        <main className="flex-1 p-4 sm:p-6 lg:p-8 max-w-7xl w-full">
+        <main className="flex-1 p-3 sm:p-6 lg:p-8 max-w-7xl w-full min-w-0">
           {activeTab === 'dashboard' && (
             <Dashboard
               blogs={blogs}
               news={news}
-              onNavigate={(tab) => setActiveTab(tab)}
-              onOpenCreateBlog={() => setActiveTab('blogs')}
-              onOpenCreateNews={() => setActiveTab('news')}
+              enquiryCount={enquiries.length}
+              onNavigate={(tab) => {
+                setActiveTab(tab);
+                setIsSidebarOpen(false);
+              }}
+              onOpenCreateBlog={() => {
+                setActiveTab('blogs');
+                setIsSidebarOpen(false);
+              }}
+              onOpenCreateNews={() => {
+                setActiveTab('news');
+                setIsSidebarOpen(false);
+              }}
             />
           )}
 

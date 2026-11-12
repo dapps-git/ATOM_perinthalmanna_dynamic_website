@@ -30,7 +30,7 @@ export default function SystemStatus() {
           System & Media Configuration
         </h2>
         <p className="text-xs text-gray-500 mt-1">
-          Real-time status of backend services, database connectors, and WebP compression pipeline.
+          Real-time status of backend services and storage connectors.
         </p>
       </div>
 
@@ -53,18 +53,18 @@ export default function SystemStatus() {
           </div>
         </div>
 
-        {/* Sharp WebP Processing Engine */}
+        {/* Media Storage Engine */}
         <div className="bg-white p-5 rounded-2xl border border-gray-200/80 shadow-sm">
           <div className="flex items-center justify-between">
             <span className="text-xs font-semibold text-gray-500 uppercase tracking-wider">
-              Sharp WebP Engine
+              Media Processing
             </span>
             <Sparkles className="w-5 h-5 text-red-600" />
           </div>
           <p className="text-xl font-bold text-gray-900 mt-2">Active</p>
           <div className="flex items-center gap-1.5 mt-2 text-xs font-semibold text-emerald-600">
             <CheckCircle2 className="w-4 h-4" />
-            <span>Auto converts PNG/JPG to .webp</span>
+            <span>Optimized Image Pipeline</span>
           </div>
         </div>
 
@@ -124,7 +124,7 @@ export default function SystemStatus() {
               CLOUDINARY_API_SECRET=&lt;api_secret&gt;
             </div>
             <p className="text-[11px] text-gray-500 mt-2">
-              WebP files will then upload straight to your Cloudinary media cloud in the <code className="text-red-700 font-semibold">atom_institute</code> folder.
+              Uploaded media will then stream directly to your Cloudinary media cloud in the <code className="text-red-700 font-semibold">atom_institute</code> folder.
             </p>
           </div>
         </div>
@@ -133,12 +133,12 @@ export default function SystemStatus() {
         <div className="p-4 rounded-xl bg-gray-50 border border-gray-200 flex items-start gap-3">
           <Key className="w-5 h-5 text-red-600 flex-shrink-0 mt-0.5" />
           <div className="text-xs text-gray-700">
-            <p className="font-bold text-gray-900">Configured Admin Credentials</p>
+            <p className="font-bold text-gray-900">Configured Admin Account</p>
             <p className="mt-0.5 font-mono text-gray-600">
               Email: <span className="text-red-700 font-semibold">atominstitute@perinthalmanna.com</span>
             </p>
             <p className="font-mono text-gray-600">
-              Password: <span className="text-red-700 font-semibold">atominstitute@#perinthalmanna</span>
+              Password: <span className="text-gray-400">••••••••••••••••</span> <span className="text-[10px] text-emerald-600 font-semibold">(bcrypt hashed)</span>
             </p>
           </div>
         </div>

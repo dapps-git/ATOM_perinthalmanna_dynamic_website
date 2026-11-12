@@ -3,8 +3,43 @@
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 
+const defaultNews = [
+  {
+    _id: 'default-news-1',
+    title: 'Cochin University of Science and Technology entrance exam coaching.',
+    summary: 'Weekend and regular batches for higher secondary students targeting premier science and engineering admissions.',
+    category: 'News & Events',
+    publishDate: '2025-05-12',
+    coverImage: { url: '/news-sample-1.webp' },
+  },
+  {
+    _id: 'default-news-2',
+    title: 'Admissions Open for NEET 2026 Integrated Two-Year Foundation Batch.',
+    summary: 'Comprehensive coaching and fast-track guidance for NEET aspirants with dedicated problem-solving workshops.',
+    category: 'Admissions',
+    publishDate: '2025-05-10',
+    coverImage: { url: '/news-sample-2.webp' },
+  },
+  {
+    _id: 'default-news-3',
+    title: 'Scholarship Aptitude Test Registrations Commenced for State Repeaters.',
+    summary: 'Merit-based scholarships available for students aiming for top medical and engineering ranks.',
+    category: 'Scholarships',
+    publishDate: '2025-05-08',
+    coverImage: { url: '/classroom.webp' },
+  },
+  {
+    _id: 'default-news-4',
+    title: 'CUET & KEAM Crash Course Orientation Session at Perinthalmanna Campus.',
+    summary: 'Interactive guidance session led by expert faculty covering scoring patterns and time management.',
+    category: 'Announcements',
+    publishDate: '2025-05-05',
+    coverImage: { url: '/atom-campus.webp' },
+  },
+];
+
 export default function NewsSection() {
-  const [newsList, setNewsList] = useState([]);
+  const [newsList, setNewsList] = useState(defaultNews);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -30,8 +65,8 @@ export default function NewsSection() {
           </h2>
         </div>
 
-        {/* 2-Column Horizontal Cards */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8">
+        {/* 2-Column Horizontal Sleek Rectangle Cards */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
           {newsList.map((item, idx) => {
             const displayDate = item.publishDate
               ? new Date(item.publishDate)
@@ -49,10 +84,10 @@ export default function NewsSection() {
               <Link
                 key={item._id}
                 href={`/news/${item.slug || item._id}`}
-                className="group flex flex-col sm:flex-row bg-[#FAFAFA] hover:bg-white border border-gray-100 hover:border-gray-200 rounded-none shadow-none hover:shadow-md transition-all overflow-hidden"
+                className="group flex flex-row items-center bg-[#FAFAFA] hover:bg-white border border-gray-100 hover:border-gray-200 rounded-none shadow-none hover:shadow-md transition-all overflow-hidden h-28 sm:h-32"
               >
-                {/* Left: Thumbnail Image (No Border Radius) */}
-                <div className="sm:w-5/12 h-52 sm:h-auto min-h-[170px] relative bg-gray-200 flex-shrink-0 overflow-hidden rounded-none">
+                {/* Left: Reduced Size Rectangle Thumbnail */}
+                <div className="w-28 sm:w-36 md:w-40 h-full relative bg-gray-200 shrink-0 overflow-hidden rounded-none">
                   <img
                     src={item.coverImage?.url || defaultThumb}
                     alt={item.title}
@@ -63,20 +98,21 @@ export default function NewsSection() {
                   />
                 </div>
 
-                {/* Right: Date, Red Category, Headline */}
-                <div className="sm:w-7/12 p-5 sm:p-6 flex flex-col justify-center space-y-2">
-                  {/* Date */}
-                  <span className="text-xs sm:text-[13px] font-medium text-gray-900 tracking-wide">
-                    {displayDate}
-                  </span>
+                {/* Right: Reduced Content in Rectangle Layout */}
+                <div className="flex-1 p-3 sm:p-4 flex flex-col justify-center min-w-0 space-y-1">
+                  {/* Meta: Category & Date */}
+                  <div className="flex items-center gap-2">
+                    <span className="text-[10px] sm:text-xs font-semibold text-red-600 truncate">
+                      {item.category || 'News & Events'}
+                    </span>
+                    <span className="text-gray-300">•</span>
+                    <span className="text-[10px] sm:text-xs text-gray-400 font-light whitespace-nowrap">
+                      {displayDate}
+                    </span>
+                  </div>
 
-                  {/* Red Category */}
-                  <span className="text-xs sm:text-[13px] font-medium text-red-600">
-                    {item.category || 'News & Events'}
-                  </span>
-
-                  {/* Headline */}
-                  <h3 className="text-sm sm:text-base text-gray-800 font-normal leading-snug line-clamp-3 group-hover:text-red-600 transition-colors">
+                  {/* Headline: Compact font size, 2-line clamp */}
+                  <h3 className="text-xs sm:text-sm font-medium text-gray-800 leading-snug line-clamp-2 group-hover:text-red-600 transition-colors">
                     {item.title}
                   </h3>
                 </div>

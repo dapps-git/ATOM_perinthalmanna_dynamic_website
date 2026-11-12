@@ -116,7 +116,7 @@ export default function NewsManager({ news, onRefresh }) {
         setSuccessMsg('News notice updated successfully!');
       } else {
         await createNews(formData);
-        setSuccessMsg('News item published with automatic WebP conversion!');
+        setSuccessMsg('News item published successfully!');
       }
 
       setIsModalOpen(false);
@@ -241,9 +241,6 @@ export default function NewsManager({ news, onRefresh }) {
                       e.target.src = '/logo.png';
                     }}
                   />
-                  <span className="absolute bottom-1 right-1 px-1 py-0.2 rounded bg-black/70 text-white text-[8px] font-bold">
-                    WEBP
-                  </span>
                 </div>
 
                 <div className="flex-1 min-w-0">
@@ -316,7 +313,7 @@ export default function NewsManager({ news, onRefresh }) {
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         title={editingItem ? 'Edit News / Notice' : 'Publish New Notice or News'}
-        subtitle="Images will automatically convert to WebP for fast website load times."
+        subtitle="Fill in the announcement details and upload an optional banner image."
       >
         <form onSubmit={handleSubmit} className="space-y-4">
           {error && (
@@ -384,7 +381,7 @@ export default function NewsManager({ news, onRefresh }) {
 
           <div>
             <label className="block text-xs font-semibold uppercase tracking-wider text-gray-700 mb-1">
-              Banner / Cover Image (Converts to WebP)
+              Banner / Cover Image
             </label>
             <div className="border-2 border-dashed border-gray-200 rounded-xl p-4 text-center hover:border-red-400 transition bg-gray-50/50">
               <input
@@ -403,7 +400,7 @@ export default function NewsManager({ news, onRefresh }) {
                   {imageFile ? imageFile.name : 'Click to select notice image'}
                 </span>
                 <span className="text-[11px] text-gray-400">
-                  PNG, JPG, WEBP • Automatically converted to WebP via Sharp
+                  PNG, JPG, JPEG • High quality image recommended
                 </span>
               </label>
 
@@ -414,9 +411,6 @@ export default function NewsManager({ news, onRefresh }) {
                     alt="Preview"
                     className="h-28 rounded-lg object-cover border border-gray-200 mx-auto"
                   />
-                  <span className="absolute bottom-1 right-1 px-1.5 py-0.5 rounded bg-black/70 text-white text-[9px] font-bold">
-                    WebP Ready
-                  </span>
                 </div>
               )}
             </div>
@@ -494,7 +488,7 @@ export default function NewsManager({ news, onRefresh }) {
               className="px-5 py-2 rounded-xl bg-red-600 hover:bg-red-700 text-white text-xs font-semibold transition shadow-md shadow-red-600/20 disabled:opacity-70 cursor-pointer flex items-center gap-2"
             >
               {loading && <div className="w-3.5 h-3.5 border-2 border-white border-t-transparent rounded-full animate-spin" />}
-              <span>{editingItem ? 'Save Changes' : 'Publish Notice (WebP)'}</span>
+              <span>{editingItem ? 'Save Changes' : 'Publish Notice'}</span>
             </button>
           </div>
         </form>

@@ -9,30 +9,32 @@ export default function AboutSection() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Section Heading - Centered with Lightweight Font */}
-        <div className="text-center mb-12 sm:mb-16">
+        <div className="text-center mb-10 sm:mb-14">
           <h2 className="text-3xl sm:text-4xl font-light text-gray-900 tracking-tight">
             Who We Are
           </h2>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-14 items-center">
           
-          {/* ================= LEFT COLUMN: CAMPUS IMAGE (NO BORDER RADIUS) ================= */}
-          <div className="lg:col-span-6 flex justify-center items-center order-2 lg:order-1">
+          {/* ================= PHOTO (TWO GIRLS STUDYING) ================= */}
+          {/* On mobile: order-1 (photo first); on desktop: order-1 (left column) */}
+          <div className="lg:col-span-6 flex justify-center items-center order-1">
             <div className="w-full overflow-hidden rounded-none shadow-sm border border-gray-200 bg-white">
               <picture>
-                <source srcSet="/atom-campus.webp" type="image/webp" />
+                <source srcSet="/hero-students.webp" type="image/webp" />
                 <img
-                  src="/atom-campus.jpg"
-                  alt="Atom Institute Campus Perinthalmanna"
-                  className="w-full h-auto max-h-[400px] object-cover object-center block rounded-none"
+                  src="/hero-students.jpg"
+                  alt="Atom Institute students preparing for entrance exams"
+                  className="w-full h-auto max-h-[380px] sm:max-h-[420px] object-cover object-center block rounded-none"
                 />
               </picture>
             </div>
           </div>
 
-          {/* ================= RIGHT COLUMN: TEXT CONTENT ================= */}
-          <div className="lg:col-span-6 space-y-6 order-1 lg:order-2">
+          {/* ================= TEXT CONTENT ================= */}
+          {/* On mobile: order-2 (text below photo); on desktop: order-2 (right column) */}
+          <div className="lg:col-span-6 space-y-5 sm:space-y-6 order-2">
             {/* Paragraph 1 */}
             <p className="text-sm sm:text-[15px] text-gray-600 font-light leading-relaxed">
               <strong className="font-semibold text-gray-800">ATOM – Inspiration of Science</strong> is a leading entrance coaching institute committed to shaping the academic success of aspiring students preparing for competitive examinations such as <span className="text-red-600 font-medium">NEET, JEE, CUET, CUSAT, KEAM, and IISER</span>. We believe that strong fundamentals and clear concepts are the foundation of excellence, and our programs are carefully designed to help students master core subjects with confidence and clarity.

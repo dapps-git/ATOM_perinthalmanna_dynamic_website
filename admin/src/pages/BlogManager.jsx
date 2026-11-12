@@ -114,7 +114,7 @@ export default function BlogManager({ blogs, onRefresh }) {
         setSuccessMsg('Blog post updated successfully!');
       } else {
         await createBlog(formData);
-        setSuccessMsg('New blog created with automatic WebP conversion!');
+        setSuccessMsg('New blog created successfully!');
       }
 
       setIsModalOpen(false);
@@ -159,7 +159,7 @@ export default function BlogManager({ blogs, onRefresh }) {
         <div>
           <h2 className="text-xl sm:text-2xl font-bold text-gray-900">Blog Management</h2>
           <p className="text-xs text-gray-500 mt-1">
-            Publish articles, coaching tips, and academic insights. Uploaded images convert automatically to WebP.
+            Publish articles, coaching tips, and academic insights for students and parents.
           </p>
         </div>
         <button
@@ -242,10 +242,6 @@ export default function BlogManager({ blogs, onRefresh }) {
                   <span className="px-2.5 py-1 rounded-full text-[10px] font-bold bg-white/90 backdrop-blur-sm text-red-700 shadow-sm">
                     {blog.category || 'General'}
                   </span>
-                  <span className="px-2 py-0.5 rounded-full text-[9px] font-extrabold bg-red-600 text-white shadow-sm flex items-center gap-1">
-                    <Sparkles className="w-2.5 h-2.5" />
-                    <span>WEBP</span>
-                  </span>
                 </div>
 
                 <div className="absolute top-3 right-3">
@@ -313,7 +309,7 @@ export default function BlogManager({ blogs, onRefresh }) {
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         title={editingBlog ? 'Edit Blog Article' : 'Create New Blog Article'}
-        subtitle="Images will automatically convert to WebP for fast website load times."
+        subtitle="Fill in the article details and upload an optional cover image."
       >
         <form onSubmit={handleSubmit} className="space-y-4">
           {error && (
@@ -370,7 +366,7 @@ export default function BlogManager({ blogs, onRefresh }) {
 
           <div>
             <label className="block text-xs font-semibold uppercase tracking-wider text-gray-700 mb-1">
-              Cover Image (Converts to WebP)
+              Cover Image
             </label>
             <div className="border-2 border-dashed border-gray-200 rounded-xl p-4 text-center hover:border-red-400 transition bg-gray-50/50">
               <input
@@ -389,7 +385,7 @@ export default function BlogManager({ blogs, onRefresh }) {
                   {imageFile ? imageFile.name : 'Click to select cover image'}
                 </span>
                 <span className="text-[11px] text-gray-400">
-                  PNG, JPG, JPEG, WEBP • Automatically converted to WebP via Sharp
+                  PNG, JPG, JPEG • High quality image recommended
                 </span>
               </label>
 
@@ -400,9 +396,6 @@ export default function BlogManager({ blogs, onRefresh }) {
                     alt="Preview"
                     className="h-28 rounded-lg object-cover border border-gray-200 mx-auto"
                   />
-                  <span className="absolute bottom-1 right-1 px-1.5 py-0.5 rounded bg-black/70 text-white text-[9px] font-bold">
-                    WebP Ready
-                  </span>
                 </div>
               )}
             </div>
@@ -477,7 +470,7 @@ export default function BlogManager({ blogs, onRefresh }) {
               className="px-5 py-2 rounded-xl bg-red-600 hover:bg-red-700 text-white text-xs font-semibold transition shadow-md shadow-red-600/20 disabled:opacity-70 cursor-pointer flex items-center gap-2"
             >
               {loading && <div className="w-3.5 h-3.5 border-2 border-white border-t-transparent rounded-full animate-spin" />}
-              <span>{editingBlog ? 'Save Changes' : 'Publish Blog (WebP)'}</span>
+              <span>{editingBlog ? 'Save Changes' : 'Publish Article'}</span>
             </button>
           </div>
         </form>

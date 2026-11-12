@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { loginAdmin, setAuthToken, setStoredAdmin } from '../services/api';
-import { Lock, Mail, ArrowRight, ShieldCheck, AlertCircle } from 'lucide-react';
+import { Lock, Mail, ArrowRight, Eye, EyeOff, AlertCircle } from 'lucide-react';
 
 export default function Login({ onLoginSuccess }) {
-  const [email, setEmail] = useState('atominstitute@perinthalmanna.com');
-  const [password, setPassword] = useState('atominstitute@#perinthalmanna');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
@@ -27,12 +28,6 @@ export default function Login({ onLoginSuccess }) {
     } finally {
       setLoading(false);
     }
-  };
-
-  const handleFillCredentials = () => {
-    setEmail('atominstitute@perinthalmanna.com');
-    setPassword('atominstitute@#perinthalmanna');
-    setError('');
   };
 
   return (
@@ -91,7 +86,7 @@ export default function Login({ onLoginSuccess }) {
                     required
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    placeholder="atominstitute@perinthalmanna.com"
+                    placeholder="admin@atominstitute.com"
                     className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-gray-200 text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:border-red-500 focus:ring-2 focus:ring-red-500/20 transition-all bg-gray-50/50 hover:bg-white focus:bg-white"
                   />
                 </div>
@@ -106,29 +101,27 @@ export default function Login({ onLoginSuccess }) {
                     <Lock className="w-4 h-4 text-gray-400" />
                   </div>
                   <input
-                    type="password"
+                    type={showPassword ? 'text' : 'password'}
                     required
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     placeholder="••••••••••••••••••••"
-                    className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-gray-200 text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:border-red-500 focus:ring-2 focus:ring-red-500/20 transition-all bg-gray-50/50 hover:bg-white focus:bg-white"
+                    className="w-full pl-10 pr-11 py-2.5 rounded-xl border border-gray-200 text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:border-red-500 focus:ring-2 focus:ring-red-500/20 transition-all bg-gray-50/50 hover:bg-white focus:bg-white"
                   />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword((prev) => !prev)}
+                    className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600 transition-colors"
+                    tabIndex={-1}
+                    aria-label={showPassword ? 'Hide password' : 'Show password'}
+                  >
+                    {showPassword ? (
+                      <EyeOff className="w-4 h-4" />
+                    ) : (
+                      <Eye className="w-4 h-4" />
+                    )}
+                  </button>
                 </div>
-              </div>
-
-              {/* Quick credential reminder */}
-              <div className="p-3 bg-red-50/60 rounded-xl border border-red-100 text-xs text-gray-600 flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <ShieldCheck className="w-4 h-4 text-red-600" />
-                  <span>Preconfigured Admin Account</span>
-                </div>
-                <button
-                  type="button"
-                  onClick={handleFillCredentials}
-                  className="text-red-700 font-semibold hover:underline text-[11px]"
-                >
-                  Auto-fill
-                </button>
               </div>
 
               <button
@@ -158,4 +151,3 @@ export default function Login({ onLoginSuccess }) {
     </div>
   );
 }
-
