@@ -2,6 +2,7 @@ require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
+const fs = require('fs');
 const { connectDB } = require('./config/db');
 const { seedDefaultAdminIfConnected } = require('./controllers/authController');
 
@@ -27,6 +28,9 @@ app.use(express.urlencoded({ extended: true, limit: '15mb' }));
 
 // Serve static uploaded WebP images
 const uploadsPath = path.join(__dirname, '../uploads');
+if (!fs.existsSync(uploadsPath)) {
+  fs.mkdirSync(uploadsPath, { recursive: true });
+}
 app.use('/uploads', express.static(uploadsPath));
 
 // API Routes
@@ -95,4 +99,6 @@ const startServer = async () => {
 };
 
 startServer();
+
+module.exports = app;
 
