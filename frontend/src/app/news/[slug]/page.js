@@ -14,7 +14,8 @@ export default function NewsDetailPage() {
 
   useEffect(() => {
     if (params?.slug) {
-      fetch(`http://localhost:5000/api/news/${params.slug}`)
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'https://tweaki.pw/atom_institution/api';
+      fetch(`${apiUrl}/news/${params.slug}`)
         .then((res) => res.json())
         .then((data) => {
           if (data.news) setNewsItem(data.news);

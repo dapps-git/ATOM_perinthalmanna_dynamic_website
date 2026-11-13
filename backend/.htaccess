@@ -1,0 +1,14 @@
+# Pass all requests (including OPTIONS preflight) to Passenger / Node.js
+# so CORS headers are set by the app, not Apache.
+
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+
+  # Let OPTIONS preflight pass through to Node without interference
+  RewriteCond %{REQUEST_METHOD} OPTIONS
+  RewriteRule ^ - [L]
+</IfModule>
+
+# Do NOT let Apache handle CORS itself — the Node app does it
+# (Avoids duplicate or conflicting Access-Control-Allow-Origin headers)
+

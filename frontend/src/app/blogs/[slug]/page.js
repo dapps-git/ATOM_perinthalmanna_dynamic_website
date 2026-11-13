@@ -14,7 +14,8 @@ export default function BlogDetailPage() {
 
   useEffect(() => {
     if (params?.slug) {
-      fetch(`http://localhost:5000/api/blogs/${params.slug}`)
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'https://tweaki.pw/atom_institution/api';
+      fetch(`${apiUrl}/blogs/${params.slug}`)
         .then((res) => res.json())
         .then((data) => {
           if (data.blog) setBlog(data.blog);

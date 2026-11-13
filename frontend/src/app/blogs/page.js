@@ -40,7 +40,8 @@ export default function BlogsPage() {
   const [blogs, setBlogs] = useState(defaultBlogs);
 
   useEffect(() => {
-    fetch('http://localhost:5000/api/blogs')
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'https://tweaki.pw/atom_institution/api';
+    fetch(`${apiUrl}/blogs?publishedOnly=true`)
       .then((res) => res.json())
       .then((data) => {
         if (data.blogs && data.blogs.length > 0) {

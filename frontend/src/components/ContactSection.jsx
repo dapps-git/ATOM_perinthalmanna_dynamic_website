@@ -1,11 +1,40 @@
 'use client';
 
-import React from 'react';
-import { Phone, Mail, MapPin, Clock, MessageCircle, ExternalLink } from 'lucide-react';
+import React, { useState } from 'react';
+import { Phone, Mail, MapPin, Clock, MessageCircle, Send, CheckCircle } from 'lucide-react';
+import { submitEnquiry } from '../lib/api';
 
 export default function ContactSection() {
   const mapUrl =
     'https://maps.google.com/?cid=369425932390620783&g_mp=CiVnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLkdldFBsYWNlEAMYASAF';
+
+  const [form, setForm] = useState({ name: '', phone: '', exam: 'NEET', message: '' });
+  const [submitting, setSubmitting] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
+  const [error, setError] = useState('');
+
+  const handleChange = (e) => {
+    setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError('');
+    if (!form.name.trim() || !form.phone.trim()) {
+      setError('Name and phone number are required.');
+      return;
+    }
+    try {
+      setSubmitting(true);
+      await submitEnquiry(form);
+      setSubmitted(true);
+      setForm({ name: '', phone: '', exam: 'NEET', message: '' });
+    } catch (err) {
+      setError(err.message || 'Failed to send. Please try again.');
+    } finally {
+      setSubmitting(false);
+    }
+  };
 
   return (
     <section id="contact" className="py-16 sm:py-24 bg-white border-b border-gray-100">
@@ -23,8 +52,8 @@ export default function ContactSection() {
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-stretch">
           
-          {/* ================= LEFT COLUMN: CONTACT DETAILS (FORM REMOVED) ================= */}
-          <div className="lg:col-span-6 bg-slate-50/70 p-7 sm:p-10 rounded-none border border-gray-200/80 flex flex-col justify-between space-y-8">
+          {/* ================= LEFT COLUMN: CONTACT DETAILS ================= */}
+          <div className="lg:col-span-4 bg-slate-50/70 p-7 sm:p-10 rounded-none border border-gray-200/80 flex flex-col justify-between space-y-8">
             
             <div className="space-y-6">
               <div>
@@ -127,8 +156,115 @@ export default function ContactSection() {
 
           </div>
 
+          {/* ================= MIDDLE COLUMN: ENQUIRY FORM ================= */}
+          <div className="lg:col-span-4 bg-white p-7 sm:p-10 rounded-none border border-gray-200/80">
+            <div className="mb-6">
+              <span className="text-[11px] font-bold tracking-wider text-red-600 uppercase">
+                Quick Admission Enquiry
+              </span>
+              <h3 className="text-xl sm:text-2xl font-medium text-gray-900 mt-1">
+                Register Interest
+              </h3>
+            </div>
+
+            {submitted ? (
+              <div className="flex flex-col items-center justify-center py-10 text-center space-y-3">
+                <CheckCircle className="w-10 h-10 text-emerald-500" />
+                <p className="text-sm font-semibold text-gray-800">Enquiry Submitted!</p>
+                <p className="text-xs text-gray-500 font-light">
+                  Our admissions team will contact you shortly.
+                </p>
+                <button
+                  onClick={() => setSubmitted(false)}
+                  className="mt-2 text-xs text-red-600 font-medium hover:underline"
+                >
+                  Submit another enquiry
+                </button>
+              </div>
+            ) : (
+              <form onSubmit={handleSubmit} className="space-y-4">
+                {error && (
+                  <p className="text-xs text-red-600 bg-red-50 border border-red-200 p-2 rounded">
+                    {error}
+                  </p>
+                )}
+
+                <div>
+                  <label className="block text-xs font-semibold text-gray-700 mb-1">
+                    Full Name <span className="text-red-500">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    name="name"
+                    value={form.name}
+                    onChange={handleChange}
+                    placeholder="Your full name"
+                    required
+                    className="w-full px-3 py-2.5 text-sm border border-gray-200 focus:outline-none focus:border-red-400 bg-slate-50 font-light"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-xs font-semibold text-gray-700 mb-1">
+                    Phone Number <span className="text-red-500">*</span>
+                  </label>
+                  <input
+                    type="tel"
+                    name="phone"
+                    value={form.phone}
+                    onChange={handleChange}
+                    placeholder="+91 XXXXX XXXXX"
+                    required
+                    className="w-full px-3 py-2.5 text-sm border border-gray-200 focus:outline-none focus:border-red-400 bg-slate-50 font-light"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-xs font-semibold text-gray-700 mb-1">
+                    Exam Target
+                  </label>
+                  <select
+                    name="exam"
+                    value={form.exam}
+                    onChange={handleChange}
+                    className="w-full px-3 py-2.5 text-sm border border-gray-200 focus:outline-none focus:border-red-400 bg-slate-50 font-light"
+                  >
+                    <option value="NEET">NEET</option>
+                    <option value="JEE">JEE</option>
+                    <option value="CUET">CUET</option>
+                    <option value="KEAM">KEAM</option>
+                    <option value="Other">Other</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block text-xs font-semibold text-gray-700 mb-1">
+                    Message (optional)
+                  </label>
+                  <textarea
+                    name="message"
+                    value={form.message}
+                    onChange={handleChange}
+                    rows={3}
+                    placeholder="Any specific queries about batches or courses..."
+                    className="w-full px-3 py-2.5 text-sm border border-gray-200 focus:outline-none focus:border-red-400 bg-slate-50 font-light resize-none"
+                  />
+                </div>
+
+                <button
+                  type="submit"
+                  disabled={submitting}
+                  className="w-full inline-flex items-center justify-center gap-2 px-6 py-3 bg-red-600 hover:bg-red-700 active:bg-red-800 text-white font-semibold text-xs transition-all shadow-sm disabled:opacity-60"
+                >
+                  <Send className="w-3.5 h-3.5" />
+                  <span>{submitting ? 'Sending...' : 'Send Enquiry'}</span>
+                </button>
+              </form>
+            )}
+          </div>
+
           {/* ================= RIGHT COLUMN: INTERACTIVE GOOGLE MAP ================= */}
-          <div className="lg:col-span-6 rounded-none overflow-hidden shadow-sm border border-gray-200 bg-white min-h-[380px] sm:min-h-[460px] relative">
+          <div className="lg:col-span-4 rounded-none overflow-hidden shadow-sm border border-gray-200 bg-white min-h-[380px] sm:min-h-[460px] relative">
             <iframe
               title="Atom Institute Of Science Perinthalmanna Campus Location Map"
               src="https://maps.google.com/maps?q=Atom+Institute+Of+Science,+Pattambi+Rd,+near+South+Indian+Bank+-+Perinthalmanna+Branch,+Shanti+Nagar,+Perinthalmanna,+Keralam+679322&t=&z=16&ie=UTF8&iwloc=&output=embed"

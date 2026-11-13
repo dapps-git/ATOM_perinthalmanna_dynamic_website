@@ -27,3 +27,15 @@ export async function getNewsBySlug(slug) {
   return res.json();
 }
 
+// Enquiry / Contact Form submission (public — no auth needed)
+export async function submitEnquiry(data) {
+  const res = await fetch(`${API_BASE}/enquiries`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(data),
+  });
+  const json = await res.json().catch(() => ({}));
+  if (!res.ok) throw new Error(json.message || 'Failed to submit enquiry');
+  return json;
+}
+

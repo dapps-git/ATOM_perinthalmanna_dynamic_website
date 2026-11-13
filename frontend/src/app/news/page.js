@@ -45,7 +45,8 @@ export default function NewsPage() {
   const [news, setNews] = useState(defaultNews);
 
   useEffect(() => {
-    fetch('http://localhost:5000/api/news')
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'https://tweaki.pw/atom_institution/api';
+    fetch(`${apiUrl}/news?publishedOnly=true`)
       .then((res) => res.json())
       .then((data) => {
         if (data.news && data.news.length > 0) {

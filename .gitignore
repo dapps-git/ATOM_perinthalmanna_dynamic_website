@@ -15,11 +15,14 @@ admin/dist/
 build/
 out/
 
-# Environment files
+# Environment files — secrets (never commit)
 .env
-.env*
-**/.env*
+.env.local
+**/.env.local
 backend/.env
+
+# .env.production files are safe to commit (public API URLs only)
+# .env.local.example files are safe to commit (documentation)
 
 # Logs
 *.log

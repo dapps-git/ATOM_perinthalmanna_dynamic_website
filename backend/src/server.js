@@ -14,13 +14,36 @@ const enquiryRoutes = require('./routes/enquiryRoutes');
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-// Enable CORS for admin and frontend clients
-app.use(
-  cors({
-    origin: '*',
-    credentials: true,
-  })
-);
+// Allowed origins for CORS
+const ALLOWED_ORIGINS = [
+  'https://admin-kyol.vercel.app',
+  'https://tweaki.pw',
+  // add more origins below if needed
+  /\.vercel\.app$/,
+];
+
+const corsOptions = {
+  origin: (origin, callback) => {
+    // Allow requests with no origin (Postman, server-to-server)
+    if (!origin) return callback(null, true);
+    const allowed = ALLOWED_ORIGINS.some((o) =>
+      o instanceof RegExp ? o.test(origin) : o === origin
+    );
+    if (allowed) {
+      callback(null, true);
+    } else {
+      callback(new Error(`CORS: origin ${origin} not allowed`));
+    }
+  },
+  credentials: true,
+  methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  optionsSuccessStatus: 204,
+};
+
+// Enable CORS for all routes + handle preflight OPTIONS globally
+app.use(cors(corsOptions));
+app.options('*', cors(corsOptions));
 
 // Express body parsers
 app.use(express.json({ limit: '15mb' }));
