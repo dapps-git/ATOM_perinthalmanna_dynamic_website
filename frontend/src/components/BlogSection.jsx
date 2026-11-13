@@ -9,7 +9,8 @@ export default function BlogSection() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch('http://localhost:5000/api/blogs?limit=3')
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'https://tweaki.pw/atom_institution/api';
+    fetch(`${apiUrl}/blogs?limit=3`)
       .then((res) => res.json())
       .then((data) => {
         if (data.blogs && data.blogs.length > 0) {

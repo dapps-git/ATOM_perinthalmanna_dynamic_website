@@ -1,4 +1,5 @@
-const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api';
+const API_BASE =
+  process.env.NEXT_PUBLIC_API_URL || 'https://tweaki.pw/atom_institution/api';
 
 export async function getPublishedBlogs(params = {}) {
   const query = new URLSearchParams({ ...params, publishedOnly: 'true' }).toString();

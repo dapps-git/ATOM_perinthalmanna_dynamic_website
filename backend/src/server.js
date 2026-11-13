@@ -32,25 +32,36 @@ if (!fs.existsSync(uploadsPath)) {
   fs.mkdirSync(uploadsPath, { recursive: true });
 }
 app.use('/uploads', express.static(uploadsPath));
+app.use('/atom_institution/uploads', express.static(uploadsPath));
 
-// API Routes
-app.use('/api/auth', authRoutes);
-app.use('/api/blogs', blogRoutes);
-app.use('/api/news', newsRoutes);
-app.use('/api/enquiries', enquiryRoutes);
+// Unified API Router
+const apiRouter = express.Router();
+apiRouter.use('/auth', authRoutes);
+apiRouter.use('/blogs', blogRoutes);
+apiRouter.use('/news', newsRoutes);
+apiRouter.use('/enquiries', enquiryRoutes);
 
 // Health check endpoint
-app.get('/api/health', (req, res) => {
+const healthCheckHandler = (req, res) => {
   res.json({
     status: 'online',
     institution: 'Atom Institute Perinthalmanna',
     timestamp: new Date().toISOString(),
-    imageFormat: 'WebP automatic conversion active via Sharp',
   });
-});
+};
+
+apiRouter.get('/health', healthCheckHandler);
+app.get('/api/health', healthCheckHandler);
+app.get('/atom_institution/api/health', healthCheckHandler);
+app.get('/atom_institution/health', healthCheckHandler);
+
+// Mount API routes for both standard and subpath deployments (/atom_institution)
+app.use('/api', apiRouter);
+app.use('/atom_institution/api', apiRouter);
+app.use('/atom_institution', apiRouter);
 
 // Root API info
-app.get('/', (req, res) => {
+const rootInfoHandler = (req, res) => {
   res.send(`
     <html>
       <head><title>Atom Institute API</title></head>
@@ -63,11 +74,13 @@ app.get('/', (req, res) => {
           <li><strong>News:</strong> GET/POST <code>/api/news</code></li>
           <li><strong>Health Check:</strong> GET <code>/api/health</code></li>
         </ul>
-        <p><em>Image uploads are automatically converted to <strong>WebP</strong> format using Sharp before cloud or local persistence.</em></p>
       </body>
     </html>
   `);
-});
+};
+
+app.get('/', rootInfoHandler);
+app.get('/atom_institution', rootInfoHandler);
 
 // 404 Handler
 app.use((req, res) => {

@@ -1,4 +1,8 @@
-const API_BASE = '/api';
+const API_BASE =
+  import.meta.env.VITE_API_URL ||
+  (typeof window !== 'undefined' && window.location.hostname === 'localhost'
+    ? '/api'
+    : 'https://tweaki.pw/atom_institution/api');
 
 export const getAuthToken = () => localStorage.getItem('atom_admin_token');
 export const setAuthToken = (token) => localStorage.setItem('atom_admin_token', token);
