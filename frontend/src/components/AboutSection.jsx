@@ -17,18 +17,30 @@ export default function AboutSection() {
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-14 items-center">
           
-          {/* ================= PHOTO (TWO GIRLS STUDYING) ================= */}
-          {/* On mobile: order-1 (photo first); on desktop: order-1 (left column) */}
+          {/* ================= PHOTO ================= */}
+          {/* Mobile view: Two girls studying photo; Laptop/desktop view: Atom Building photo */}
           <div className="lg:col-span-6 flex justify-center items-center order-1">
             <div className="w-full overflow-hidden rounded-none shadow-sm border border-gray-200 bg-white">
-              <picture>
-                <source srcSet="/hero-students.webp" type="image/webp" />
+              {/* Mobile View: Students Photo */}
+              <div className="block lg:hidden">
+                <picture>
+                  <source srcSet="/hero-students.webp" type="image/webp" />
+                  <img
+                    src="/hero-students.jpg"
+                    alt="Atom Institute students preparing for entrance exams"
+                    className="w-full h-auto max-h-[380px] sm:max-h-[420px] object-cover object-center block rounded-none"
+                  />
+                </picture>
+              </div>
+
+              {/* Laptop/Desktop View: Building Photo */}
+              <div className="hidden lg:block">
                 <img
-                  src="/hero-students.jpg"
-                  alt="Atom Institute students preparing for entrance exams"
-                  className="w-full h-auto max-h-[380px] sm:max-h-[420px] object-cover object-center block rounded-none"
+                  src="/atom-building.jpg"
+                  alt="Atom Institute Campus Building Perinthalmanna"
+                  className="w-full h-auto max-h-[460px] object-cover object-center block rounded-none"
                 />
-              </picture>
+              </div>
             </div>
           </div>
 

@@ -13,18 +13,6 @@ export default function ContactPage() {
     <div className="min-h-screen bg-white flex flex-col justify-between">
       <Navbar />
 
-      {/* Page Header - Clean & Lightweight */}
-      <section className="bg-white border-b border-gray-100 py-8 sm:py-10 text-center">
-        <div className="max-w-3xl mx-auto px-4">
-          <h1 className="text-3xl sm:text-4xl font-light text-gray-900 tracking-tight">
-            Contact Us
-          </h1>
-          <p className="mt-2 text-xs sm:text-sm text-gray-500 font-light max-w-lg mx-auto">
-            Fill out the registration form or visit our campuses in Perinthalmanna and Valanchery.
-          </p>
-        </div>
-      </section>
-
       <main className="flex-1">
         <ContactSection />
       </main>
