@@ -7,7 +7,6 @@ import {
   CheckCircle2,
   Clock,
   ArrowUpRight,
-  UserCheck,
   Sparkles,
 } from 'lucide-react';
 
@@ -62,7 +61,7 @@ export default function Dashboard({
       </div>
 
       {/* Metric Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         {/* Total Blogs */}
         <div className="bg-white p-5 rounded-2xl border border-gray-200/80 shadow-sm hover:shadow-md transition">
           <div className="flex items-center justify-between">
@@ -111,23 +110,6 @@ export default function Dashboard({
           <div className="flex items-center gap-1.5 mt-2 text-xs text-gray-500 font-medium">
             <Clock className="w-3.5 h-3.5" />
             <span>Real-time counter</span>
-          </div>
-        </div>
-
-        {/* Admission Enquiries */}
-        <div className="bg-white p-5 rounded-2xl border border-gray-200/80 shadow-sm hover:shadow-md transition">
-          <div className="flex items-center justify-between">
-            <span className="text-xs font-semibold text-gray-500 uppercase tracking-wider">
-              Enquiries
-            </span>
-            <div className="w-9 h-9 rounded-xl bg-red-50 text-red-600 flex items-center justify-center">
-              <UserCheck className="w-5 h-5" />
-            </div>
-          </div>
-          <p className="text-2xl font-bold text-gray-900 mt-2">{enquiryCount}</p>
-          <div className="flex items-center gap-1.5 mt-2 text-xs text-emerald-600 font-medium">
-            <CheckCircle2 className="w-3.5 h-3.5" />
-            <span>Admissions desk</span>
           </div>
         </div>
       </div>

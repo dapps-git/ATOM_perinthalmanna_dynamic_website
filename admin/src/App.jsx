@@ -5,8 +5,6 @@ import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
 import BlogManager from './pages/BlogManager';
 import NewsManager from './pages/NewsManager';
-import EnquiriesManager from './pages/EnquiriesManager';
-import SystemStatus from './pages/SystemStatus';
 import {
   getAuthToken,
   getStoredAdmin,
@@ -14,7 +12,6 @@ import {
   removeStoredAdmin,
   fetchBlogs,
   fetchNews,
-  fetchEnquiries,
 } from './services/api';
 
 export default function App() {
@@ -22,7 +19,6 @@ export default function App() {
   const [activeTab, setActiveTab] = useState('dashboard');
   const [blogs, setBlogs] = useState([]);
   const [news, setNews] = useState([]);
-  const [enquiries, setEnquiries] = useState([]);
   const [loading, setLoading] = useState(true);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
@@ -36,17 +32,15 @@ export default function App() {
     setLoading(false);
   }, []);
 
-  // Fetch blogs, news & enquiries
+  // Fetch blogs & news
   const loadData = async () => {
     try {
-      const [blogsRes, newsRes, enquiriesRes] = await Promise.all([
+      const [blogsRes, newsRes] = await Promise.all([
         fetchBlogs().catch(() => ({ blogs: [] })),
         fetchNews().catch(() => ({ news: [] })),
-        fetchEnquiries().catch(() => ({ enquiries: [] })),
       ]);
       if (blogsRes?.blogs) setBlogs(blogsRes.blogs);
       if (newsRes?.news) setNews(newsRes.news);
-      if (enquiriesRes?.enquiries) setEnquiries(enquiriesRes.enquiries);
     } catch (err) {
       console.error('Failed to load data:', err);
     }
@@ -103,7 +97,6 @@ export default function App() {
           }}
           blogCount={blogs.length}
           newsCount={news.length}
-          enquiryCount={enquiries.length}
           isOpen={isSidebarOpen}
           onClose={() => setIsSidebarOpen(false)}
         />
@@ -113,7 +106,6 @@ export default function App() {
             <Dashboard
               blogs={blogs}
               news={news}
-              enquiryCount={enquiries.length}
               onNavigate={(tab) => {
                 setActiveTab(tab);
                 setIsSidebarOpen(false);
@@ -136,12 +128,6 @@ export default function App() {
           {activeTab === 'news' && (
             <NewsManager news={news} onRefresh={loadData} />
           )}
-
-          {activeTab === 'enquiries' && (
-            <EnquiriesManager enquiries={enquiries} onRefresh={loadData} />
-          )}
-
-          {activeTab === 'status' && <SystemStatus />}
         </main>
       </div>
     </div>

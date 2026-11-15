@@ -3,8 +3,6 @@ import {
   LayoutDashboard,
   FileText,
   Newspaper,
-  UserCheck,
-  Server,
   X,
 } from 'lucide-react';
 
@@ -13,7 +11,6 @@ export default function Sidebar({
   setActiveTab,
   blogCount = 0,
   newsCount = 0,
-  enquiryCount = 0,
   isOpen = false,
   onClose,
 }) {
@@ -35,20 +32,6 @@ export default function Sidebar({
       label: 'News & Circulars',
       icon: Newspaper,
       badge: newsCount > 0 ? newsCount : null,
-    },
-    {
-      id: 'enquiries',
-      label: 'Admission Enquiries',
-      icon: UserCheck,
-      badge: enquiryCount > 0 ? enquiryCount : null,
-      badgeColor: 'bg-red-100 text-red-700',
-    },
-    {
-      id: 'status',
-      label: 'System Status',
-      icon: Server,
-      badge: 'Online',
-      badgeColor: 'bg-emerald-100 text-emerald-700',
     },
   ];
 
