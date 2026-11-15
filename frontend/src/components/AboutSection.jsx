@@ -5,12 +5,12 @@ import { ArrowRight } from 'lucide-react';
 
 export default function AboutSection() {
   return (
-    <section id="about" className="py-16 sm:py-24 bg-white border-y border-gray-100">
+    <section id="about" className="pt-6 pb-12 sm:pt-10 sm:pb-16 lg:py-16 bg-white border-y border-gray-100">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Section Heading - Centered with Lightweight Font */}
-        <div className="text-center mb-10 sm:mb-14">
-          <h2 className="text-3xl sm:text-4xl font-light text-gray-900 tracking-tight">
+        <div className="text-center mb-5 sm:mb-8">
+          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-light text-gray-900 tracking-tight">
             Who We Are
           </h2>
         </div>

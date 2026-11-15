@@ -29,7 +29,7 @@ export default function Hero() {
       {/* ========================================================================= */}
       {/* MOBILE / BELOW TABLET HERO VIEW (Matches User Mockup)                      */}
       {/* ========================================================================= */}
-      <div className="lg:hidden w-full relative pb-8">
+      <div className="lg:hidden w-full relative pb-0">
         
         {/* Top Curved Navy Blue Header - Compact Reduced Height */}
         <div className="relative bg-gradient-to-br from-[#082956] via-[#0B3979] to-[#0A3369] text-white pt-5 pb-7 px-5 sm:px-6 overflow-hidden rounded-b-[28px] shadow-md z-10">
@@ -72,22 +72,24 @@ export default function Hero() {
           />
         </div>
 
-        {/* Full-Width Glassy Course Names Bar - Placed Below Image (No Floating Overlap, No Border Radius) */}
-        <div className="w-full bg-white/85 backdrop-blur-md border-y border-gray-200/70 shadow-sm py-2.5 sm:py-3 px-1.5 sm:px-4 rounded-none relative z-10">
-          <div className="flex items-center justify-between w-full">
-            {exams.map((exam, index) => {
+        {/* Full-Width Continuous Train Animation / Ticker Bar (Mobile) */}
+        <div className="w-full bg-white/95 backdrop-blur-md border-y border-gray-200/80 shadow-sm py-2.5 overflow-hidden relative z-10">
+          {/* Left and right soft edge gradients */}
+          <div className="absolute left-0 top-0 bottom-0 w-6 bg-gradient-to-r from-white to-transparent z-10 pointer-events-none" />
+          <div className="absolute right-0 top-0 bottom-0 w-6 bg-gradient-to-l from-white to-transparent z-10 pointer-events-none" />
+
+          <div className="animate-train-marquee flex items-center">
+            {[...exams, ...exams].map((exam, index) => {
               const Icon = exam.icon;
               return (
-                <div key={exam.name} className="flex items-center flex-1 justify-center">
-                  <div className="flex items-center gap-1 sm:gap-1.5 px-0.5 sm:px-1">
-                    <Icon className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-red-600 stroke-[2] shrink-0" />
-                    <span className="text-[10px] sm:text-xs font-semibold text-gray-800 tracking-wider">
+                <div key={`${exam.name}-${index}`} className="flex items-center shrink-0">
+                  <div className="flex items-center gap-2 px-5 sm:px-6">
+                    <Icon className="w-3.5 h-3.5 text-red-600 stroke-[2] shrink-0" />
+                    <span className="text-xs sm:text-[13px] font-semibold text-gray-800 tracking-wider">
                       {exam.name}
                     </span>
                   </div>
-                  {index < exams.length - 1 && (
-                    <div className="h-3.5 w-[1px] bg-gray-200/80 ml-auto" />
-                  )}
+                  <div className="h-3.5 w-[1px] bg-gray-200/90" />
                 </div>
               );
             })}

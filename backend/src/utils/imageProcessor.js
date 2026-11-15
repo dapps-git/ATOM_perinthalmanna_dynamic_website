@@ -22,36 +22,42 @@ const processAndUploadImage = async (fileBuffer, originalName = 'image', folder 
 
     const metadata = await sharp(webpBuffer).metadata();
 
-    // 2. If Cloudinary is configured, upload WebP buffer to Cloudinary
+    const cleanBaseName = path
+      .parse(originalName)
+      .name.replace(/[^a-zA-Z0-9_-]/g, '_')
+      .substring(0, 40);
+
+    // 2. If Cloudinary is configured, attempt upload to Cloudinary with safe fallback
     if (isCloudinaryConfigured()) {
-      return new Promise((resolve, reject) => {
-        const cleanBaseName = path
-          .parse(originalName)
-          .name.replace(/[^a-zA-Z0-9_-]/g, '_')
-          .substring(0, 40);
-        const publicId = `${folder}/${cleanBaseName}_${Date.now()}`;
-
-        const uploadStream = cloudinary.uploader.upload_stream(
-          {
-            public_id: publicId,
-            folder: folder,
-            format: 'webp',
-            resource_type: 'image',
-          },
-          (error, result) => {
-            if (error) return reject(error);
-            resolve({
-              url: result.secure_url,
-              public_id: result.public_id,
+      try {
+        const uploadResult = await new Promise((resolve, reject) => {
+          const uploadStream = cloudinary.uploader.upload_stream(
+            {
+              folder: folder,
+              public_id: `${cleanBaseName}_${Date.now()}`,
               format: 'webp',
-              width: result.width || metadata.width,
-              height: result.height || metadata.height,
-            });
-          }
-        );
+              resource_type: 'image',
+            },
+            (error, result) => {
+              if (error) return reject(error);
+              resolve({
+                url: result.secure_url,
+                public_id: result.public_id,
+                format: 'webp',
+                width: result.width || metadata.width,
+                height: result.height || metadata.height,
+              });
+            }
+          );
 
-        uploadStream.end(webpBuffer);
-      });
+          uploadStream.end(webpBuffer);
+        });
+
+        return uploadResult;
+      } catch (cloudinaryError) {
+        console.warn('⚠️ Cloudinary upload rejected (falling back to local WebP storage):', cloudinaryError.message);
+        // Fall through to local storage below!
+      }
     }
 
     // 3. Fallback: Save WebP file to local uploads directory
@@ -60,10 +66,6 @@ const processAndUploadImage = async (fileBuffer, originalName = 'image', folder 
       fs.mkdirSync(uploadsDir, { recursive: true });
     }
 
-    const cleanBaseName = path
-      .parse(originalName)
-      .name.replace(/[^a-zA-Z0-9_-]/g, '_')
-      .substring(0, 40);
     const fileName = `${cleanBaseName}_${Date.now()}.webp`;
     const filePath = path.join(uploadsDir, fileName);
 

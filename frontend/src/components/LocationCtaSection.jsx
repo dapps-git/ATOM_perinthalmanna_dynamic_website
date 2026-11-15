@@ -9,13 +9,13 @@ export default function LocationCtaSection() {
     'https://maps.google.com/?cid=369425932390620783&g_mp=CiVnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLkdldFBsYWNlEAMYASAF';
 
   return (
-    <section className="py-16 sm:py-24 bg-[#FBFBFC] border-t border-gray-100">
+    <section className="py-10 sm:py-14 lg:py-16 bg-[#FBFBFC] border-t border-gray-100">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center">
-          
+
           {/* ================= LEFT COLUMN: CTA TEXT & CONTACT ================= */}
           <div className="lg:col-span-6 space-y-6">
-            
+
             {/* Headline - Reduced font size */}
             <h2 className="text-xl sm:text-2xl lg:text-[28px] font-medium text-gray-900 tracking-tight leading-snug">
               Ready to Start Your Journey to{' '}

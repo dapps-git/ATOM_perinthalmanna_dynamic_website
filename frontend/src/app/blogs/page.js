@@ -16,24 +16,6 @@ const defaultBlogs = [
       url: 'https://images.unsplash.com/photo-1532094349884-543bc11b234d?w=800&auto=format&fit=crop&q=80',
     },
   },
-  {
-    _id: 'default-blog-2',
-    title: 'Top Strategies for IIT-JEE Advanced Problem Solving and Speed',
-    excerpt: 'Comprehensive guidance on time management, conceptual clarity in Physics and Mathematics, and mock test analysis.',
-    author: 'Atom IIT-JEE Mentors',
-    coverImage: {
-      url: 'https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=800&auto=format&fit=crop&q=80',
-    },
-  },
-  {
-    _id: 'default-blog-3',
-    title: 'CUET & KEAM Admission Guide: Complete Syllabus & Preparation Roadmap',
-    excerpt: 'Key topics, syllabus breakdown, and step-by-step revision strategy for higher secondary science students.',
-    author: 'Atom Academic Council',
-    coverImage: {
-      url: 'https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=800&auto=format&fit=crop&q=80',
-    },
-  },
 ];
 
 export default function BlogsPage() {
@@ -45,7 +27,14 @@ export default function BlogsPage() {
       .then((res) => res.json())
       .then((data) => {
         if (data.blogs && data.blogs.length > 0) {
-          setBlogs(data.blogs);
+          const filtered = data.blogs.filter(
+            (b) =>
+              !b.title?.toLowerCase().includes('top strategies for iit-jee') &&
+              !b.title?.toLowerCase().includes('cuet & keam admission guide')
+          );
+          if (filtered.length > 0) {
+            setBlogs(filtered);
+          }
         }
       })
       .catch((err) => console.error(err));

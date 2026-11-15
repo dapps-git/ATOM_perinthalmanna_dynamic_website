@@ -107,3 +107,24 @@ body {
     display: none;
   }
 }
+
+/* Continuous Train Animation (Marquee Ticker for Mobile Exam Bar) */
+@keyframes trainMarquee {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  100% {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+.animate-train-marquee {
+  display: flex;
+  width: max-content;
+  will-change: transform;
+  animation: trainMarquee 20s linear infinite;
+}
+
+.animate-train-marquee:hover {
+  animation-play-state: paused;
+}

@@ -4,54 +4,55 @@ import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { ArrowRight, User } from 'lucide-react';
 
+const fallbackBlogs = [
+  {
+    _id: 'default-blog-1',
+    title: 'How to Build an Unshakeable Foundation for NEET Biology & Chemistry',
+    excerpt: 'Expert advice on NCERT mastery, memory recall techniques, and effective question practice for 650+ scores.',
+    author: 'Atom Faculty Team',
+    coverImage: {
+      url: 'https://images.unsplash.com/photo-1532094349884-543bc11b234d?w=800&auto=format&fit=crop&q=80',
+    },
+  },
+];
+
 export default function BlogSection() {
   const [blogs, setBlogs] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'https://tweaki.pw/atom_institution/api';
-    fetch(`${apiUrl}/blogs?limit=3`)
+    fetch(`${apiUrl}/blogs?limit=6&publishedOnly=true`)
       .then((res) => res.json())
       .then((data) => {
         if (data.blogs && data.blogs.length > 0) {
-          setBlogs(data.blogs);
+          const filtered = data.blogs.filter(
+            (b) =>
+              !b.title?.toLowerCase().includes('top strategies for iit-jee') &&
+              !b.title?.toLowerCase().includes('cuet & keam admission guide')
+          );
+          if (filtered.length > 0) {
+            setBlogs(filtered);
+          } else {
+            setBlogs(fallbackBlogs);
+          }
         } else {
-          setBlogs([
-            {
-              _id: 'default-blog-1',
-              title: 'How to Build an Unshakeable Foundation for NEET Biology & Chemistry',
-              excerpt: 'Expert advice on NCERT mastery, memory recall techniques, and effective question practice for 650+ scores.',
-              author: 'Atom Faculty Team',
-              coverImage: {
-                url: 'https://images.unsplash.com/photo-1532094349884-543bc11b234d?w=800&auto=format&fit=crop&q=80',
-              },
-            },
-          ]);
+          setBlogs(fallbackBlogs);
         }
       })
       .catch(() => {
-        setBlogs([
-          {
-            _id: 'default-blog-1',
-            title: 'How to Build an Unshakeable Foundation for NEET Biology & Chemistry',
-            excerpt: 'Expert advice on NCERT mastery, memory recall techniques, and effective question practice for 650+ scores.',
-            author: 'Atom Faculty Team',
-            coverImage: {
-              url: 'https://images.unsplash.com/photo-1532094349884-543bc11b234d?w=800&auto=format&fit=crop&q=80',
-            },
-          },
-        ]);
+        setBlogs(fallbackBlogs);
       })
       .finally(() => setLoading(false));
   }, []);
 
   return (
-    <section id="blogs" className="py-16 sm:py-20 bg-slate-50 border-t border-gray-100">
+    <section id="blogs" className="py-10 sm:py-14 lg:py-16 bg-slate-50 border-t border-gray-100">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Section Heading - Centered with Lightweight Font */}
-        <div className="text-center mb-10 sm:mb-12">
-          <h2 className="text-3xl sm:text-4xl font-light text-gray-900 tracking-tight">
+        <div className="text-center mb-6 sm:mb-8">
+          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-light text-gray-900 tracking-tight">
             Blogs
           </h2>
         </div>

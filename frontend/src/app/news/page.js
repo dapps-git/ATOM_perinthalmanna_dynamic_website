@@ -8,22 +8,6 @@ import { Calendar, ArrowRight } from 'lucide-react';
 
 const defaultNews = [
   {
-    _id: 'default-news-1',
-    title: 'Cochin University of Science and Technology entrance exam coaching.',
-    summary: 'Weekend and regular batches for higher secondary students targeting premier science and engineering university admissions.',
-    category: 'News & Events',
-    publishDate: '2025-05-12',
-    coverImage: { url: '/news-sample-1.webp' },
-  },
-  {
-    _id: 'default-news-2',
-    title: 'Admissions Open for NEET 2026 Integrated Two-Year Foundation Batch.',
-    summary: 'Comprehensive coaching and fast-track guidance for NEET aspirants with dedicated problem-solving workshops and mock tests.',
-    category: 'Admissions',
-    publishDate: '2025-05-10',
-    coverImage: { url: '/news-sample-2.webp' },
-  },
-  {
     _id: 'default-news-3',
     title: 'Scholarship Aptitude Test Registrations Commenced for State Repeaters.',
     summary: 'Merit-based scholarships available for students aiming for top medical and engineering ranks with high percentile scores.',
@@ -50,7 +34,14 @@ export default function NewsPage() {
       .then((res) => res.json())
       .then((data) => {
         if (data.news && data.news.length > 0) {
-          setNews(data.news);
+          const filtered = data.news.filter(
+            (item) =>
+              !item.title?.toLowerCase().includes('cochin university') &&
+              !item.title?.toLowerCase().includes('neet 2026 integrated two-year')
+          );
+          if (filtered.length > 0) {
+            setNews(filtered);
+          }
         }
       })
       .catch((err) => console.error(err));

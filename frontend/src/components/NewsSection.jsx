@@ -5,22 +5,6 @@ import Link from 'next/link';
 
 const defaultNews = [
   {
-    _id: 'default-news-1',
-    title: 'Cochin University of Science and Technology entrance exam coaching.',
-    summary: 'Weekend and regular batches for higher secondary students targeting premier science and engineering admissions.',
-    category: 'News & Events',
-    publishDate: '2025-05-12',
-    coverImage: { url: '/news-sample-1.webp' },
-  },
-  {
-    _id: 'default-news-2',
-    title: 'Admissions Open for NEET 2026 Integrated Two-Year Foundation Batch.',
-    summary: 'Comprehensive coaching and fast-track guidance for NEET aspirants with dedicated problem-solving workshops.',
-    category: 'Admissions',
-    publishDate: '2025-05-10',
-    coverImage: { url: '/news-sample-2.webp' },
-  },
-  {
     _id: 'default-news-3',
     title: 'Scholarship Aptitude Test Registrations Commenced for State Repeaters.',
     summary: 'Merit-based scholarships available for students aiming for top medical and engineering ranks.',
@@ -44,11 +28,18 @@ export default function NewsSection() {
 
   useEffect(() => {
     const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'https://tweaki.pw/atom_institution/api';
-    fetch(`${apiUrl}/news?limit=4`)
+    fetch(`${apiUrl}/news?limit=6`)
       .then((res) => res.json())
       .then((data) => {
         if (data.news && data.news.length > 0) {
-          setNewsList(data.news);
+          const filtered = data.news.filter(
+            (item) =>
+              !item.title?.toLowerCase().includes('cochin university') &&
+              !item.title?.toLowerCase().includes('neet 2026 integrated two-year')
+          );
+          if (filtered.length > 0) {
+            setNewsList(filtered);
+          }
         }
       })
       .catch((err) => console.error('Error fetching news:', err))
@@ -56,12 +47,12 @@ export default function NewsSection() {
   }, []);
 
   return (
-    <section id="news" className="py-16 sm:py-20 bg-white">
+    <section id="news" className="py-10 sm:py-14 lg:py-16 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Section Heading - Centered with Lightweight Font */}
-        <div className="text-center mb-10 sm:mb-12">
-          <h2 className="text-3xl sm:text-4xl font-light text-gray-900 tracking-tight">
+        <div className="text-center mb-6 sm:mb-8">
+          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-light text-gray-900 tracking-tight">
             Events &amp; Latest News
           </h2>
         </div>
