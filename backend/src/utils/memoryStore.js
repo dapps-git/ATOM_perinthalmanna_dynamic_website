@@ -22,46 +22,7 @@ let blogs = [
   }
 ];
 
-let newsList = [
-  {
-    _id: 'news-sample-3',
-    title: 'Scholarship Aptitude Test Registrations Commenced for State Repeaters.',
-    slug: 'scholarship-aptitude-test-repeaters',
-    summary: 'Merit-based scholarships available for students aiming for top medical and engineering ranks with high percentile scores.',
-    content: 'Atom Education opens registrations for merit-based scholarship aptitude tests for medical and engineering aspirants.',
-    coverImage: {
-      url: 'http://localhost:5000/uploads/classroom.webp',
-      public_id: 'news-sample-3',
-      format: 'webp'
-    },
-    category: 'Scholarships',
-    badgeText: 'SCHOLARSHIPS',
-    publishDate: '2025-05-08T00:00:00.000Z',
-    isPublished: true,
-    priority: 1,
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString()
-  },
-  {
-    _id: 'news-sample-4',
-    title: 'CUET & KEAM Crash Course Orientation Session at Perinthalmanna Campus.',
-    slug: 'cuet-keam-crash-course-orientation',
-    summary: 'Interactive guidance session led by expert faculty covering scoring patterns, time management, and mock test analysis.',
-    content: 'Orientation sessions for CUET and KEAM intensive crash courses covering comprehensive syllabus revision and speed drills.',
-    coverImage: {
-      url: 'http://localhost:5000/uploads/atom-campus.webp',
-      public_id: 'news-sample-4',
-      format: 'webp'
-    },
-    category: 'Announcements',
-    badgeText: 'ANNOUNCEMENTS',
-    publishDate: '2025-05-05T00:00:00.000Z',
-    isPublished: true,
-    priority: 2,
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString()
-  }
-];
+let newsList = [];
 
 module.exports = {
   blogs,

@@ -3,32 +3,13 @@
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 
-const defaultNews = [
-  {
-    _id: 'default-news-3',
-    title: 'Scholarship Aptitude Test Registrations Commenced for State Repeaters.',
-    summary: 'Merit-based scholarships available for students aiming for top medical and engineering ranks.',
-    category: 'Scholarships',
-    publishDate: '2025-05-08',
-    coverImage: { url: '/classroom.webp' },
-  },
-  {
-    _id: 'default-news-4',
-    title: 'CUET & KEAM Crash Course Orientation Session at Perinthalmanna Campus.',
-    summary: 'Interactive guidance session led by expert faculty covering scoring patterns and time management.',
-    category: 'Announcements',
-    publishDate: '2025-05-05',
-    coverImage: { url: '/atom-campus.webp' },
-  },
-];
-
 export default function NewsSection() {
-  const [newsList, setNewsList] = useState(defaultNews);
+  const [newsList, setNewsList] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'https://tweaki.pw/atom_institution/api';
-    fetch(`${apiUrl}/news?limit=6`)
+    fetch(`${apiUrl}/news?limit=6&publishedOnly=true`)
       .then((res) => res.json())
       .then((data) => {
         if (data.news && data.news.length > 0) {
@@ -37,14 +18,21 @@ export default function NewsSection() {
               !item.title?.toLowerCase().includes('cochin university') &&
               !item.title?.toLowerCase().includes('neet 2026 integrated two-year')
           );
-          if (filtered.length > 0) {
-            setNewsList(filtered);
-          }
+          setNewsList(filtered);
+        } else {
+          setNewsList([]);
         }
       })
-      .catch((err) => console.error('Error fetching news:', err))
+      .catch((err) => {
+        console.error('Error fetching news:', err);
+        setNewsList([]);
+      })
       .finally(() => setLoading(false));
   }, []);
+
+  if (!loading && newsList.length === 0) {
+    return null;
+  }
 
   return (
     <section id="news" className="py-10 sm:py-14 lg:py-16 bg-white">

@@ -6,27 +6,9 @@ import Navbar from '../../components/Navbar';
 import Footer from '../../components/Footer';
 import { Calendar, ArrowRight } from 'lucide-react';
 
-const defaultNews = [
-  {
-    _id: 'default-news-3',
-    title: 'Scholarship Aptitude Test Registrations Commenced for State Repeaters.',
-    summary: 'Merit-based scholarships available for students aiming for top medical and engineering ranks with high percentile scores.',
-    category: 'Scholarships',
-    publishDate: '2025-05-08',
-    coverImage: { url: '/classroom.webp' },
-  },
-  {
-    _id: 'default-news-4',
-    title: 'CUET & KEAM Crash Course Orientation Session at Perinthalmanna Campus.',
-    summary: 'Interactive guidance session led by expert faculty covering scoring patterns, time management, and mock test analysis.',
-    category: 'Announcements',
-    publishDate: '2025-05-05',
-    coverImage: { url: '/atom-campus.webp' },
-  },
-];
-
 export default function NewsPage() {
-  const [news, setNews] = useState(defaultNews);
+  const [news, setNews] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'https://tweaki.pw/atom_institution/api';
@@ -39,12 +21,16 @@ export default function NewsPage() {
               !item.title?.toLowerCase().includes('cochin university') &&
               !item.title?.toLowerCase().includes('neet 2026 integrated two-year')
           );
-          if (filtered.length > 0) {
-            setNews(filtered);
-          }
+          setNews(filtered);
+        } else {
+          setNews([]);
         }
       })
-      .catch((err) => console.error(err));
+      .catch((err) => {
+        console.error(err);
+        setNews([]);
+      })
+      .finally(() => setLoading(false));
   }, []);
 
   return (
@@ -63,59 +49,69 @@ export default function NewsPage() {
         </div>
 
         {/* News Items List */}
-        <div className="space-y-4">
-          {news.map((item) => (
-            <div
-              key={item._id}
-              className="bg-white rounded-none border border-gray-100 p-4 sm:p-5 shadow-sm hover:shadow-md hover:border-red-200 transition-all flex flex-col sm:flex-row gap-4 sm:gap-5 items-start sm:items-center justify-between"
-            >
-              <div className="flex items-start gap-4 flex-1">
-                {/* Compact Thumbnail (No Border Radius) */}
-                <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-none overflow-hidden bg-gray-100 flex-shrink-0 border border-gray-100">
-                  <img
-                    src={item.coverImage?.url || '/logo.png'}
-                    alt={item.title}
-                    className="w-full h-full object-cover rounded-none"
-                    onError={(e) => {
-                      e.target.src = '/logo.png';
-                    }}
-                  />
-                </div>
-
-                <div className="flex-1 min-w-0">
-                  <div className="flex flex-wrap items-center gap-2 mb-1">
-                    <span className="text-xs text-red-600 font-medium">
-                      {item.category || 'News & Events'}
-                    </span>
-                    <span className="text-xs text-gray-400 font-light flex items-center gap-1">
-                      <Calendar className="w-3 h-3 text-gray-400" />
-                      <span>
-                        {item.publishDate
-                          ? new Date(item.publishDate).toLocaleDateString()
-                          : 'Recent'}
-                      </span>
-                    </span>
+        {loading ? (
+          <div className="py-20 flex justify-center">
+            <div className="w-8 h-8 border-2 border-red-600 border-t-transparent rounded-full animate-spin" />
+          </div>
+        ) : news.length > 0 ? (
+          <div className="space-y-4">
+            {news.map((item) => (
+              <div
+                key={item._id}
+                className="bg-white rounded-none border border-gray-100 p-4 sm:p-5 shadow-sm hover:shadow-md hover:border-red-200 transition-all flex flex-col sm:flex-row gap-4 sm:gap-5 items-start sm:items-center justify-between"
+              >
+                <div className="flex items-start gap-4 flex-1">
+                  {/* Compact Thumbnail (No Border Radius) */}
+                  <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-none overflow-hidden bg-gray-100 flex-shrink-0 border border-gray-100">
+                    <img
+                      src={item.coverImage?.url || '/logo.png'}
+                      alt={item.title}
+                      className="w-full h-full object-cover rounded-none"
+                      onError={(e) => {
+                        e.target.src = '/logo.png';
+                      }}
+                    />
                   </div>
 
-                  <h2 className="text-sm sm:text-base font-medium text-gray-900 leading-snug">
-                    {item.title}
-                  </h2>
-                  <p className="text-xs sm:text-sm text-gray-500 font-light mt-1 line-clamp-2 leading-relaxed">
-                    {item.summary || item.content}
-                  </p>
-                </div>
-              </div>
+                  <div className="flex-1 min-w-0">
+                    <div className="flex flex-wrap items-center gap-2 mb-1">
+                      <span className="text-xs text-red-600 font-medium">
+                        {item.category || 'News & Events'}
+                      </span>
+                      <span className="text-xs text-gray-400 font-light flex items-center gap-1">
+                        <Calendar className="w-3 h-3 text-gray-400" />
+                        <span>
+                          {item.publishDate
+                            ? new Date(item.publishDate).toLocaleDateString()
+                            : 'Recent'}
+                        </span>
+                      </span>
+                    </div>
 
-              <Link
-                href={`/news/${item.slug || item._id}`}
-                className="px-3.5 py-1.5 rounded-none border border-red-600 text-red-600 hover:bg-red-50 text-xs font-normal flex items-center gap-1.5 transition self-end sm:self-center"
-              >
-                <span>Read Notice</span>
-                <ArrowRight className="w-3 h-3" />
-              </Link>
-            </div>
-          ))}
-        </div>
+                    <h2 className="text-sm sm:text-base font-medium text-gray-900 leading-snug">
+                      {item.title}
+                    </h2>
+                    <p className="text-xs sm:text-sm text-gray-500 font-light mt-1 line-clamp-2 leading-relaxed">
+                      {item.summary || item.content}
+                    </p>
+                  </div>
+                </div>
+
+                <Link
+                  href={`/news/${item.slug || item._id}`}
+                  className="px-3.5 py-1.5 rounded-none border border-red-600 text-red-600 hover:bg-red-50 text-xs font-normal flex items-center gap-1.5 transition self-end sm:self-center"
+                >
+                  <span>Read Notice</span>
+                  <ArrowRight className="w-3 h-3" />
+                </Link>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <div className="py-16 text-center border border-gray-100 bg-gray-50/50">
+            <p className="text-gray-500 font-light text-sm">No announcements or news published yet.</p>
+          </div>
+        )}
       </main>
 
       <Footer />
