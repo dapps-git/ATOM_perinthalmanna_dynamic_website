@@ -15,30 +15,15 @@ const resultRoutes = require('./routes/resultRoutes');
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-// Allowed origins for CORS
-const ALLOWED_ORIGINS = [
-  'https://admin-kyol.vercel.app',
-  'https://tweaki.pw',
-  // add more origins below if needed
-  /\.vercel\.app$/,
-];
-
+// CORS Configuration: dynamically reflect origin to support custom domains (admin.atominstitutions.com, atominstitutions.com, vercel, localhost)
 const corsOptions = {
   origin: (origin, callback) => {
-    // Allow requests with no origin (Postman, server-to-server)
-    if (!origin) return callback(null, true);
-    const allowed = ALLOWED_ORIGINS.some((o) =>
-      o instanceof RegExp ? o.test(origin) : o === origin
-    );
-    if (allowed) {
-      callback(null, true);
-    } else {
-      callback(new Error(`CORS: origin ${origin} not allowed`));
-    }
+    // Allow and reflect any origin so cross-origin requests with credentials work seamlessly
+    callback(null, true);
   },
   credentials: true,
   methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept'],
   optionsSuccessStatus: 204,
 };
 
