@@ -3,6 +3,7 @@ import {
   LayoutDashboard,
   FileText,
   Newspaper,
+  Award,
   X,
 } from 'lucide-react';
 
@@ -11,6 +12,7 @@ export default function Sidebar({
   setActiveTab,
   blogCount = 0,
   newsCount = 0,
+  resultCount = 0,
   isOpen = false,
   onClose,
 }) {
@@ -20,6 +22,12 @@ export default function Sidebar({
       label: 'Dashboard',
       icon: LayoutDashboard,
       badge: null,
+    },
+    {
+      id: 'results',
+      label: 'Student Results',
+      icon: Award,
+      badge: resultCount > 0 ? resultCount : null,
     },
     {
       id: 'blogs',

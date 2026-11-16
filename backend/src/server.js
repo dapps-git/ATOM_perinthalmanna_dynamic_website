@@ -10,6 +10,7 @@ const authRoutes = require('./routes/authRoutes');
 const blogRoutes = require('./routes/blogRoutes');
 const newsRoutes = require('./routes/newsRoutes');
 const enquiryRoutes = require('./routes/enquiryRoutes');
+const resultRoutes = require('./routes/resultRoutes');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -63,6 +64,7 @@ apiRouter.use('/auth', authRoutes);
 apiRouter.use('/blogs', blogRoutes);
 apiRouter.use('/news', newsRoutes);
 apiRouter.use('/enquiries', enquiryRoutes);
+apiRouter.use('/results', resultRoutes);
 
 // Health check endpoint
 const healthCheckHandler = (req, res) => {

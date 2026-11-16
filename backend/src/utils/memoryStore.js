@@ -24,7 +24,10 @@ let blogs = [
 
 let newsList = [];
 
+let results = [];
+
 module.exports = {
   blogs,
-  newsList
+  newsList,
+  results,
 };

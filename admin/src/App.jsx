@@ -5,6 +5,7 @@ import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
 import BlogManager from './pages/BlogManager';
 import NewsManager from './pages/NewsManager';
+import ResultsManager from './pages/ResultsManager';
 import {
   getAuthToken,
   getStoredAdmin,
@@ -12,6 +13,7 @@ import {
   removeStoredAdmin,
   fetchBlogs,
   fetchNews,
+  fetchResults,
 } from './services/api';
 
 export default function App() {
@@ -19,6 +21,7 @@ export default function App() {
   const [activeTab, setActiveTab] = useState('dashboard');
   const [blogs, setBlogs] = useState([]);
   const [news, setNews] = useState([]);
+  const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(true);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
@@ -32,15 +35,17 @@ export default function App() {
     setLoading(false);
   }, []);
 
-  // Fetch blogs & news
+  // Fetch blogs, news & results
   const loadData = async () => {
     try {
-      const [blogsRes, newsRes] = await Promise.all([
+      const [blogsRes, newsRes, resultsRes] = await Promise.all([
         fetchBlogs().catch(() => ({ blogs: [] })),
         fetchNews().catch(() => ({ news: [] })),
+        fetchResults().catch(() => ({ results: [] })),
       ]);
       if (blogsRes?.blogs) setBlogs(blogsRes.blogs);
       if (newsRes?.news) setNews(newsRes.news);
+      if (resultsRes?.results) setResults(resultsRes.results);
     } catch (err) {
       console.error('Failed to load data:', err);
     }
@@ -97,6 +102,7 @@ export default function App() {
           }}
           blogCount={blogs.length}
           newsCount={news.length}
+          resultCount={results.length}
           isOpen={isSidebarOpen}
           onClose={() => setIsSidebarOpen(false)}
         />
@@ -106,6 +112,7 @@ export default function App() {
             <Dashboard
               blogs={blogs}
               news={news}
+              results={results}
               onNavigate={(tab) => {
                 setActiveTab(tab);
                 setIsSidebarOpen(false);
@@ -118,7 +125,15 @@ export default function App() {
                 setActiveTab('news');
                 setIsSidebarOpen(false);
               }}
+              onOpenCreateResult={() => {
+                setActiveTab('results');
+                setIsSidebarOpen(false);
+              }}
             />
+          )}
+
+          {activeTab === 'results' && (
+            <ResultsManager results={results} onRefresh={loadData} />
           )}
 
           {activeTab === 'blogs' && (

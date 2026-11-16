@@ -27,6 +27,13 @@ export async function getNewsBySlug(slug) {
   return res.json();
 }
 
+export async function getPublishedResults(params = {}) {
+  const query = new URLSearchParams({ ...params, publishedOnly: 'true' }).toString();
+  const res = await fetch(`${API_BASE}/results?${query}`, { next: { revalidate: 60 } });
+  if (!res.ok) throw new Error('Failed to fetch results');
+  return res.json();
+}
+
 // Enquiry / Contact Form submission (public — no auth needed)
 export async function submitEnquiry(data) {
   const res = await fetch(`${API_BASE}/enquiries`, {

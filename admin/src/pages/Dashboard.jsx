@@ -8,18 +8,22 @@ import {
   Clock,
   ArrowUpRight,
   Sparkles,
+  Award,
 } from 'lucide-react';
 
 export default function Dashboard({
   blogs = [],
   news = [],
+  results = [],
   enquiryCount = 0,
   onNavigate,
   onOpenCreateBlog,
   onOpenCreateNews,
+  onOpenCreateResult,
 }) {
   const publishedBlogs = blogs.filter((b) => b.isPublished).length;
   const publishedNews = news.filter((n) => n.isPublished).length;
+  const publishedResults = results.filter((r) => r.isPublished).length;
   const totalViews = blogs.reduce((acc, curr) => acc + (curr.views || 0), 0);
 
   return (
@@ -35,13 +39,20 @@ export default function Dashboard({
             Academic & Content Hub
           </h2>
           <p className="mt-2 text-sm sm:text-base text-red-100/90 leading-relaxed">
-            Manage your latest institution updates, exam coaching results, blog articles, and student enquiries in one unified console.
+            Manage your latest institution updates, student exam results, blog articles, and achievements in one unified console.
           </p>
 
           <div className="mt-5 flex flex-wrap gap-3">
             <button
-              onClick={onOpenCreateBlog}
+              onClick={onOpenCreateResult}
               className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-white text-red-700 hover:bg-red-50 font-semibold text-xs transition shadow-sm cursor-pointer"
+            >
+              <Award className="w-4 h-4 text-red-600" />
+              <span>Add Student Result</span>
+            </button>
+            <button
+              onClick={onOpenCreateBlog}
+              className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-red-800/80 hover:bg-red-900/90 border border-white/20 text-white font-semibold text-xs transition cursor-pointer"
             >
               <Plus className="w-4 h-4" />
               <span>Create Blog Post</span>
@@ -51,7 +62,7 @@ export default function Dashboard({
               className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-red-800/80 hover:bg-red-900/90 border border-white/20 text-white font-semibold text-xs transition cursor-pointer"
             >
               <Plus className="w-4 h-4" />
-              <span>Publish News / Notice</span>
+              <span>Publish News</span>
             </button>
           </div>
         </div>
@@ -61,9 +72,32 @@ export default function Dashboard({
       </div>
 
       {/* Metric Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        {/* Total Results / Achievers */}
+        <div
+          onClick={() => onNavigate && onNavigate('results')}
+          className="bg-white p-5 rounded-2xl border border-gray-200/80 shadow-sm hover:shadow-md transition cursor-pointer"
+        >
+          <div className="flex items-center justify-between">
+            <span className="text-xs font-semibold text-gray-500 uppercase tracking-wider">
+              Student Results
+            </span>
+            <div className="w-9 h-9 rounded-xl bg-red-50 text-red-600 flex items-center justify-center">
+              <Award className="w-5 h-5" />
+            </div>
+          </div>
+          <p className="text-2xl font-bold text-gray-900 mt-2">{results.length}</p>
+          <div className="flex items-center gap-1.5 mt-2 text-xs text-emerald-600 font-medium">
+            <CheckCircle2 className="w-3.5 h-3.5" />
+            <span>{publishedResults} published on site</span>
+          </div>
+        </div>
+
         {/* Total Blogs */}
-        <div className="bg-white p-5 rounded-2xl border border-gray-200/80 shadow-sm hover:shadow-md transition">
+        <div
+          onClick={() => onNavigate && onNavigate('blogs')}
+          className="bg-white p-5 rounded-2xl border border-gray-200/80 shadow-sm hover:shadow-md transition cursor-pointer"
+        >
           <div className="flex items-center justify-between">
             <span className="text-xs font-semibold text-gray-500 uppercase tracking-wider">
               Total Blogs
@@ -80,7 +114,10 @@ export default function Dashboard({
         </div>
 
         {/* Total News */}
-        <div className="bg-white p-5 rounded-2xl border border-gray-200/80 shadow-sm hover:shadow-md transition">
+        <div
+          onClick={() => onNavigate && onNavigate('news')}
+          className="bg-white p-5 rounded-2xl border border-gray-200/80 shadow-sm hover:shadow-md transition cursor-pointer"
+        >
           <div className="flex items-center justify-between">
             <span className="text-xs font-semibold text-gray-500 uppercase tracking-wider">
               News & Notices
@@ -92,7 +129,7 @@ export default function Dashboard({
           <p className="text-2xl font-bold text-gray-900 mt-2">{news.length}</p>
           <div className="flex items-center gap-1.5 mt-2 text-xs text-emerald-600 font-medium">
             <CheckCircle2 className="w-3.5 h-3.5" />
-            <span>{publishedNews} announcements active</span>
+            <span>{publishedNews} active notices</span>
           </div>
         </div>
 

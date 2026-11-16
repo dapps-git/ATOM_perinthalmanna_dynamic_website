@@ -3,6 +3,7 @@ import Hero from '../components/Hero';
 import AboutSection from '../components/AboutSection';
 import WhyChooseUsSection from '../components/WhyChooseUsSection';
 import CoursesSection from '../components/CoursesSection';
+import ResultsSection from '../components/ResultsSection';
 import BlogSection from '../components/BlogSection';
 import NewsSection from '../components/NewsSection';
 import LocationCtaSection from '../components/LocationCtaSection';
@@ -17,6 +18,7 @@ export default function Home() {
         <AboutSection />
         <WhyChooseUsSection />
         <CoursesSection />
+        <ResultsSection />
         <BlogSection />
         <NewsSection />
         <LocationCtaSection />

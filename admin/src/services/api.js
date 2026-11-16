@@ -111,6 +111,31 @@ export const deleteNews = (id) =>
     method: 'DELETE',
   });
 
+// Results / Achievers
+export const fetchResults = (params = {}) => {
+  const query = new URLSearchParams(params).toString();
+  return request(`/results${query ? `?${query}` : ''}`);
+};
+
+export const fetchResultById = (id) => request(`/results/${id}`);
+
+export const createResult = (formData) =>
+  request('/results', {
+    method: 'POST',
+    body: formData,
+  });
+
+export const updateResult = (id, formData) =>
+  request(`/results/${id}`, {
+    method: 'PUT',
+    body: formData,
+  });
+
+export const deleteResult = (id) =>
+  request(`/results/${id}`, {
+    method: 'DELETE',
+  });
+
 // Enquiries
 export const fetchEnquiries = () => request('/enquiries');
 
