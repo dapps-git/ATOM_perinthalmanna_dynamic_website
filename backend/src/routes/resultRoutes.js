@@ -20,3 +20,4 @@ router.put('/:id', authMiddleware, upload.single('photo'), updateResult);
 router.delete('/:id', authMiddleware, deleteResult);
 
 module.exports = router;
+
