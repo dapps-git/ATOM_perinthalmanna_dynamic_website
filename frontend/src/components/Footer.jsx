@@ -32,6 +32,7 @@ export default function Footer() {
               <li><Link href="/" className="hover:text-red-600 transition">Home</Link></li>
               <li><Link href="/about" className="hover:text-red-600 transition">About Academy</Link></li>
               <li><Link href="/courses" className="hover:text-red-600 transition">Our Courses</Link></li>
+              <li><Link href="/results" className="hover:text-red-600 transition">Our Results</Link></li>
               <li><Link href="/blogs" className="hover:text-red-600 transition">Academic Blogs</Link></li>
               <li><Link href="/news" className="hover:text-red-600 transition">News &amp; Notices</Link></li>
             </ul>

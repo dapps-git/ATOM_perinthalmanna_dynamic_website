@@ -128,3 +128,30 @@ body {
 .animate-train-marquee:hover {
   animation-play-state: paused;
 }
+
+/* Results Train Animation (Continuous Marquee with Moderate Speed) */
+@keyframes resultsTrainMarquee {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  100% {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+.animate-results-train {
+  display: flex;
+  width: max-content;
+  will-change: transform;
+  animation: resultsTrainMarquee 22s linear infinite;
+}
+
+.animate-results-train:hover {
+  animation-play-state: paused;
+}
+
+@media (max-width: 640px) {
+  .animate-results-train {
+    animation-duration: 16s;
+  }
+}
